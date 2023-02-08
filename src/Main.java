@@ -3,13 +3,23 @@ import array.MyArray;
 
 public class Main {
     public static void main(String[] args){
-        Array myArray = new MyArray(12);
-        myArray.add(2);
-        myArray.add(4);
-        myArray.add(6);
+
+        Array<String> myArray = new MyArray<>(4);
+        myArray.add("a");
+        myArray.add("b");
+        myArray.add("c");
+        myArray.add("d");
         System.out.println(myArray.size());
-        myArray.remove(2);
-        myArray.remove(6);
+        myArray.print();
+        myArray.add("w");
+        myArray.print();
+        System.out.println(myArray.size());
+        myArray.removeByIndex(3);
+        myArray.print();
+        System.out.println(myArray.size());
+        System.out.println(myArray.contains("n"));
+        myArray.remove("w");
+        myArray.print();
         System.out.println(myArray.size());
 
 

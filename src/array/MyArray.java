@@ -1,86 +1,69 @@
 package array;
-import java.util.Arrays;
 
 
-public class MyArray implements Array{
-    private static final int[] emptyElementData = {};
-    transient int[] elementData;
 
-    private int numberIndex=0;
+public class MyArray<E> implements Array<E> {
+    private static final int initialCapacity = 10;
+    private Object[] elementData;
+    private int numberIndex;
 
-    public MyArray(int initialCapacity)
-    {
-        if (initialCapacity > 0)
-        {
-            this.elementData = new int[initialCapacity];
-        }
-        else if (initialCapacity == 0)
-        {
-            this.elementData = emptyElementData;
-        }
-        else
-        {
+    public MyArray() {
+        this.elementData = new Object[initialCapacity];
+    }
+
+    public MyArray(int initialCapacity) {
+        if (initialCapacity < 1)
             throw new IllegalArgumentException("Illegal Capacity: " + initialCapacity);
-        }
+
+        this.elementData = new Object[initialCapacity];
     }
 
 
     @Override
-    public void add(int element) {
+    public void add(Object element) {
 
-        ensureExplicitCapacity(numberIndex+1);
+        var mainCapacity = numberIndex + 1;
+        if (mainCapacity - elementData.length > 0) {
+            grow();
+        }
         elementData[numberIndex] = element;
         numberIndex++;
 
     }
 
     @Override
-    public void remove(int element) {
-
+    public void remove(Object element) {
         int index = indexOf(element);
         removeByIndex(index);
-
     }
 
     @Override
     public void removeByIndex(int index) {
+        if( index >= 0 && index < numberIndex){
+            for (int i = index; i < numberIndex; i++) {
 
-        for (int i = index; i < numberIndex; i++) {
-
-            elementData[i] = elementData[i+1];
+                elementData[i] = elementData[i + 1];
+            }
+            elementData[numberIndex-1] = null;
+            numberIndex--;
+        }else {
+            throw new IndexOutOfBoundsException("input index is out of range !");
         }
-        numberIndex--;
     }
 
     @Override
-    public int indexOf(int element) {
-
-        int index = 0 ;
-
-        for (int e:elementData) {
-            if (element == e){
-
-                return index;
+    public int indexOf(Object element) {
+        for (int i = 0; i <=numberIndex; i++) {
+            if (element.equals(elementData[i])) {
+                return i;
             }
-          index++;
         }
-
-        throw new IllegalArgumentException(" invalid input");
-
+        return -1;
     }
 
     @Override
-    public boolean contains(int element) {
-
-        for (int i = 0; i < numberIndex; i++) {
-
-            if (element == elementData[i]){
-                return true;
-            }
-        }
-
-        return false;
-
+    public boolean contains(Object element) {
+        return indexOf(element) > -1;
     }
 
     @Override
@@ -90,30 +73,21 @@ public class MyArray implements Array{
 
     @Override
     public void print() {
-
-        for (int e: elementData) {
-            System.out.println(e);
+        for (int i = 0; i < numberIndex; i++) {
+            System.out.print(elementData[i] + "|");
         }
+        System.out.println();
     }
 
-    private void ensureExplicitCapacity(int minCapacity) {
-        if (minCapacity - elementData.length > 0)
-            grow(minCapacity);
-    }
-
-    private void grow(int minCapacity)
-    {
+    private void grow() {
         int oldCapacity = elementData.length;
         int newCapacity = oldCapacity + (oldCapacity >> 1);
-        if (newCapacity - minCapacity > 0)
-            newCapacity = minCapacity;
 
-       elementData = Arrays.copyOf(elementData , newCapacity);
-
+        Object[] newArray = new Object[newCapacity];
+        for (int i = 0; i < numberIndex; i++) {
+            newArray[i] = elementData[i];
+        }
+        elementData = newArray;
     }
-
-
-
-
-
 }
+
