@@ -1,15 +1,15 @@
 package array;
 
 public interface Array <E> {
-    void add(Object e);
+    void add(E e);
 
-    void remove(Object e);
+    void remove(E e);
 
     void removeByIndex(int i);
 
-    int indexOf(Object e);
+    int indexOf(E e);
 
-    boolean contains(Object e);
+    boolean contains(E e);
 
     int size();
 

@@ -1,7 +1,6 @@
 package array;
 
 
-
 public class MyArray<E> implements Array<E> {
     private static final int initialCapacity = 10;
     private Object[] elementData;
@@ -39,21 +38,20 @@ public class MyArray<E> implements Array<E> {
 
     @Override
     public void removeByIndex(int index) {
-        if( index >= 0 && index < numberIndex){
-            for (int i = index; i < numberIndex; i++) {
-
-                elementData[i] = elementData[i + 1];
-            }
-            elementData[numberIndex-1] = null;
-            numberIndex--;
-        }else {
+        if (index < 0 || index > numberIndex)
             throw new IndexOutOfBoundsException("input index is out of range !");
+
+        for (int i = index; i < numberIndex; i++) {
+            elementData[i] = elementData[i + 1];
         }
+
+        elementData[numberIndex - 1] = null;
+        numberIndex--;
     }
 
     @Override
     public int indexOf(Object element) {
-        for (int i = 0; i <=numberIndex; i++) {
+        for (int i = 0; i <= numberIndex; i++) {
             if (element.equals(elementData[i])) {
                 return i;
             }
@@ -73,6 +71,7 @@ public class MyArray<E> implements Array<E> {
 
     @Override
     public void print() {
+
         for (int i = 0; i < numberIndex; i++) {
             System.out.print(elementData[i] + "|");
         }
@@ -82,7 +81,6 @@ public class MyArray<E> implements Array<E> {
     private void grow() {
         int oldCapacity = elementData.length;
         int newCapacity = oldCapacity + (oldCapacity >> 1);
-
         Object[] newArray = new Object[newCapacity];
         for (int i = 0; i < numberIndex; i++) {
             newArray[i] = elementData[i];
